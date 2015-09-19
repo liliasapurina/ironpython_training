@@ -44,7 +44,7 @@ file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", f)
 excel = Excel.ApplicationClass()
 excel.visible = True
 
-workbook = excel.Workbook.Add()
+workbook = excel.Workbooks.Add()
 sheet = workbook.ActiveSheet
 
 for i in range(len(testdata)):
