@@ -42,6 +42,15 @@ def get_group_list(main_window):
     close_group_editor(modal)
     return l
 
+def delete_first_group(main_window):
+    modal = open_group_editor(main_window)
+    modal.Get(SearchCriteria.ByAutomationId("uxNewAddressButton")).Ñlick()
+    tree = modal.Get(SearchCriteria.ByAutomationId("uxAddressTreeView"))
+    tree.Nodes[1].click()
+    modal.Get(SearchCriteria.ByAutomationId("uxDeleteAddressButton")).Ñlick()
+    Keyboard.Instance.PressSpecialKey(KeyboardInput.SpecialKeys.RETURN)
+    close_group_editor(modal)
+
 def test_add_group():
     application = Application.Launch("C:\\Tools\\AppsForTesting\\AddressbookNative4\\AddressBook.exe")
     main_window = application.GetWindow("Free Address Book")
@@ -49,5 +58,20 @@ def test_add_group():
     add_new_group(main_window, "test group")
     new_list = get_group_list(main_window)
     old_list.append("test_group")
+    assert sorted(old_list) == sorted(new_list)
+    main_window.Get(SearchCriteria.ByAutomationId("uxExitAddressButton")).Ñlick()
+
+def test_delete_first_group():
+    application = Application.Launch("C:\\Tools\\AppsForTesting\\AddressbookNative4\\AddressBook.exe")
+    main_window = application.GetWindow("Free Address Book")
+    modal = open_group_editor(main_window)
+    old_list = get_group_list(main_window)
+    if len(old_list) == 0:
+        add_new_group(main_window, "test group")
+    tree = modal.Get(SearchCriteria.ByAutomationId("uxAddressTreeView"))
+    group = tree.Nodes[1].Text
+    delete_first_group(main_window)
+    new_list = get_group_list(main_window)
+    new_list.append(group)
     assert sorted(old_list) == sorted(new_list)
     main_window.Get(SearchCriteria.ByAutomationId("uxExitAddressButton")).Ñlick()
