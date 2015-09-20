@@ -19,6 +19,7 @@ except getopt.GetoptError as err:
     sys.exit(2)
 
 n = 5
+
 f = "data/groups.xlsx"
 
 for o, a in opts:
